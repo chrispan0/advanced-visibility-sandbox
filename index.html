@@ -72,11 +72,6 @@
         logEvent("page unload or refresh detected");
       });
 
-      // Scroll event tracking
-      document.addEventListener("scroll", () => {
-        logEvent(`scroll position: ${window.scrollY}`);
-      });
-
       // Click event tracking
       document.addEventListener("click", (event) => {
         logEvent(`element clicked: ${event.target.tagName}`);
