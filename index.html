@@ -76,6 +76,9 @@
       document.addEventListener("copy", () => {
         logEvent("text copied");
       });
+
+      // Remove any existing mousemove listeners if present
+      document.removeEventListener("mousemove", () => {});
     </script>
   </body>
 </html>
