@@ -1,42 +1,90 @@
-<!--
-    Copyright (C) 2024  Jackson Barker
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Visibility Test</title>
+    <title>System Information and Event Logging</title>
   </head>
   <body>
-    <p><b>Events will be logged below.</b></p>
+    <p><b>System Information:</b></p>
+    <div id="system-info"></div>
+    <hr>
+    <p><b>Events will be logged below:</b></p>
     <p id="state"></p>
     <script>
-      document.addEventListener("visibilitychange", (event) => {
+      // Function to log events to the state div
+      function logEvent(eventDescription) {
         document.getElementById("state").innerHTML +=
-          Date(Date.now()) + "<br>" + document.visibilityState + "<br><br>";
+          Date(Date.now()) + "<br>" + eventDescription + "<br><br>";
         window.scrollTo(0, document.body.scrollHeight);
+      }
+
+      // Log System Information
+      function logSystemInfo() {
+        const systemInfo = `
+          <b>CPU Cores:</b> ${navigator.hardwareConcurrency || 'N/A'}<br>
+          <b>Platform:</b> ${navigator.platform || 'N/A'}<br>
+          <b>User Agent:</b> ${navigator.userAgent || 'N/A'}<br>
+          <b>Language:</b> ${navigator.language || 'N/A'}<br>
+          <b>Online Status:</b> ${navigator.onLine ? 'Online' : 'Offline'}<br>
+        `;
+        document.getElementById("system-info").innerHTML = systemInfo;
+      }
+
+      // Run system info logging once the document loads
+      document.addEventListener("DOMContentLoaded", logSystemInfo);
+
+      // Visibility change event
+      document.addEventListener("visibilitychange", () => {
+        logEvent(document.visibilityState);
       });
-      document.addEventListener("focus", (event) => {
-        document.getElementById("state").innerHTML +=
-          Date(Date.now()) + "<br>focus<br><br>";
-        window.scrollTo(0, document.body.scrollHeight);
+
+      // Focus and blur events
+      document.addEventListener("focus", () => {
+        logEvent("focus");
       });
-      document.addEventListener("blur", (event) => {
-        document.getElementById("state").innerHTML +=
-          Date(Date.now()) + "<br>blur<br><br>";
-        window.scrollTo(0, document.body.scrollHeight);
+      document.addEventListener("blur", () => {
+        logEvent("blur");
+      });
+
+      // Additional events to track:
+      
+      // Mouse movement
+      document.addEventListener("mousemove", (event) => {
+        logEvent(`mouse moved to (${event.clientX}, ${event.clientY})`);
+      });
+
+      // Right-click detection
+      document.addEventListener("contextmenu", (event) => {
+        logEvent("right-click detected");
+      });
+
+      // Key presses
+      document.addEventListener("keydown", (event) => {
+        logEvent(`key pressed: ${event.key}`);
+      });
+
+      // Window resize event
+      window.addEventListener("resize", () => {
+        logEvent(`window resized to ${window.innerWidth} x ${window.innerHeight}`);
+      });
+
+      // Detect when the user reloads or leaves the page
+      window.addEventListener("beforeunload", () => {
+        logEvent("page unload or refresh detected");
+      });
+
+      // Scroll event tracking
+      document.addEventListener("scroll", () => {
+        logEvent(`scroll position: ${window.scrollY}`);
+      });
+
+      // Click event tracking
+      document.addEventListener("click", (event) => {
+        logEvent(`element clicked: ${event.target.tagName}`);
+      });
+
+      // Detect if the user copies text
+      document.addEventListener("copy", () => {
+        logEvent("text copied");
       });
     </script>
   </body>
