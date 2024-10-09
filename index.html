@@ -47,11 +47,6 @@
 
       // Additional events to track:
       
-      // Mouse movement
-      document.addEventListener("mousemove", (event) => {
-        logEvent(`mouse moved to (${event.clientX}, ${event.clientY})`);
-      });
-
       // Right-click detection
       document.addEventListener("contextmenu", (event) => {
         logEvent("right-click detected");
